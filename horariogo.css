@@ -1,0 +1,233 @@
+:root {
+  --glass-bg: rgba(15, 23, 42, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --neon-blue: #3b82f6;
+  --neon-red: #ef4444;
+  --neon-gold: #f59e0b;
+  --neon-green: #10b981;
+  --neon-purple: #8b5cf6;
+}
+
+body {
+  font-family: "Outfit", sans-serif;
+  background-color: #020617;
+  background-image:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(59, 130, 246, 0.15) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(239, 68, 68, 0.15) 0%,
+      transparent 40%
+    );
+  background-attachment: fixed;
+}
+
+.mono {
+  font-family: "JetBrains Mono", monospace;
+}
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+.hud-panel {
+  position: relative;
+  background-image:
+    linear-gradient(to right, var(--neon-blue) 2px, transparent 2px),
+    linear-gradient(to bottom, var(--neon-blue) 2px, transparent 2px),
+    linear-gradient(to left, var(--neon-red) 2px, transparent 2px),
+    linear-gradient(to bottom, var(--neon-red) 2px, transparent 2px),
+    linear-gradient(to right, var(--neon-red) 2px, transparent 2px),
+    linear-gradient(to top, var(--neon-red) 2px, transparent 2px),
+    linear-gradient(to left, var(--neon-blue) 2px, transparent 2px),
+    linear-gradient(to top, var(--neon-blue) 2px, transparent 2px);
+  background-position:
+    0 0,
+    0 0,
+    100% 0,
+    100% 0,
+    0 100%,
+    0 100%,
+    100% 100%,
+    100% 100%;
+  background-repeat: no-repeat;
+  background-size: 15px 15px;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.5);
+  border-radius: 10px;
+}
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.8);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.activity-card {
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+  cursor: pointer;
+}
+.activity-card:hover {
+  transform: translateX(5px);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.cat-work {
+  border-left-color: var(--neon-blue);
+}
+.cat-health {
+  border-left-color: var(--neon-green);
+}
+.cat-spiritual {
+  border-left-color: var(--neon-gold);
+}
+.cat-social {
+  border-left-color: var(--neon-purple);
+}
+.cat-sleep {
+  border-left-color: #64748b;
+}
+
+.edit-mode .activity-card {
+  border-style: dashed;
+  border-width: 1px;
+}
+.edit-mode .activity-card:hover {
+  border-color: var(--neon-blue);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+.modal.active {
+  display: flex;
+}
+
+.wisdom-gradient {
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.1) 0%,
+    transparent 100%
+  );
+}
+
+@keyframes ring {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: rotate(15deg);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: rotate(-15deg);
+  }
+}
+@keyframes scan {
+  0% {
+    top: 0%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+.scanner::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--neon-blue);
+  box-shadow: 0 0 10px var(--neon-blue);
+  animation: scan 4s linear infinite;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  background:
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+    linear-gradient(
+      90deg,
+      rgba(255, 0, 0, 0.02),
+      rgba(0, 255, 0, 0.01),
+      rgba(0, 0, 255, 0.02)
+    );
+  background-size:
+    100% 3px,
+    3px 100%;
+  opacity: 0.15;
+}
+
+.no-print {
+  display: block;
+}
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Custom Scrollbar for Day Navigation */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.3);
+  border-radius: 10px;
+}
