@@ -3,14 +3,11 @@
             document.getElementById('alarm-task-time').textContent = `${format12h(task.start)} - ${format12h(task.end)}`;
             document.getElementById('alarm-modal').classList.add('active');
             
-            if ("Notification" in window && Notification.permission === "granted") {
-                new Notification(`¡Nueva Actividad! - ${task.task}`, {
-                    body: `Iniciando ahora: ${format12h(task.start)} - ${format12h(task.end)}\n${task.desc || ''}`,
-                    icon: "https://cdn-icons-png.flaticon.com/512/4305/4305389.png",
-                    requireInteraction: true,
-                    vibrate: [200, 100, 200, 100, 200]
-                });
-            }
+            showSystemNotification(
+                `¡Nueva Actividad! - ${task.task}`, 
+                `Iniciando ahora: ${format12h(task.start)} - ${format12h(task.end)}\n${task.desc || ''}`,
+                "HorarioGo-logo.svg"
+            );
             
             try {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -35,21 +32,41 @@
             document.getElementById('alarm-modal').classList.remove('active');
         }
 
+        let swRegistration = null;
+
+        function showSystemNotification(title, body, icon) {
+            if (!("Notification" in window) || Notification.permission !== "granted") return;
+            const options = { body, icon, requireInteraction: true, vibrate: [200, 100, 200, 100, 200] };
+            if (swRegistration && swRegistration.showNotification) {
+                swRegistration.showNotification(title, options).catch(() => {
+                    try { new Notification(title, options); } catch (e) {}
+                });
+            } else {
+                try { new Notification(title, options); } catch (e) {}
+            }
+        }
+
         function requestNotificationPermission() {
             if (!("Notification" in window)) {
-                alert("Este navegador no soporta notificaciones.");
-            } else if (Notification.permission === "granted") {
+                alert("Tu navegador no soporta notificaciones. En Apple/iOS, añade la web a la Pantalla de Inicio (Compartir > Añadir a Inicio) primero.");
+                return;
+            }
+            
+            const handlePerm = (perm) => {
+                if (!('permission' in Notification)) Notification.permission = perm;
+                if (perm === "granted") {
+                    showSystemNotification("Horario Go", "¡Notificaciones activadas correctamente!", "HorarioGo-logo.svg");
+                    updateNotifyButton();
+                } else if (perm === "denied") {
+                    alert("Permiso denegado. Puedes cambiarlo en la configuración del navegador.");
+                }
+            };
+
+            if (Notification.permission === "granted") {
                 alert("Las notificaciones ya están activadas.");
             } else if (Notification.permission !== "denied") {
-                Notification.requestPermission().then(permission => {
-                    if (permission === "granted") {
-                        new Notification("Horario Go", {
-                            body: "¡Notificaciones activadas correctamente!",
-                            icon: "https://cdn-icons-png.flaticon.com/512/4305/4305389.png"
-                        });
-                        updateNotifyButton();
-                    }
-                });
+                const p = Notification.requestPermission(handlePerm);
+                if (p) p.then(handlePerm);
             }
         }
 
@@ -760,6 +777,12 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').then(reg => {
+                    swRegistration = reg;
+                }).catch(err => console.error('SW Error:', err));
+            }
+            
             renderDay(new Date().getDay());
             updateWisdomUI();
             updateSundayStatus();
