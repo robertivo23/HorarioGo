@@ -1,0 +1,17 @@
+{
+  "name": "Horario Go | Equilibrio de vida",
+  "short_name": "Horario Go",
+  "description": "Organización en Movimiento y Optimizador de Vida",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "HorarioGo-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
