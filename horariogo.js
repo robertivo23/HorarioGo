@@ -109,6 +109,7 @@
         let currentEditingDay = new Date().getDay();
         let editingIndex = -1;
         let isDailyTask = false;
+        let selectedEditDays = [];
         let lastActiveTaskIdentifier = null;
 
         const defaultSchedule = {
@@ -204,6 +205,97 @@
             }
         ];
 
+        const commonIcons = [
+            // Esenciales y Acciones
+            "fa-solid fa-star", "fa-solid fa-heart", "fa-solid fa-house", "fa-solid fa-briefcase", "fa-solid fa-gear",
+            "fa-solid fa-user", "fa-solid fa-check", "fa-solid fa-xmark", "fa-solid fa-plus", "fa-solid fa-minus",
+            "fa-solid fa-pen", "fa-solid fa-trash", "fa-solid fa-magnifying-glass", "fa-solid fa-bell", "fa-solid fa-calendar",
+            "fa-solid fa-clock", "fa-solid fa-flag", "fa-solid fa-bookmark", "fa-solid fa-tag", "fa-solid fa-share",
+            // Trabajo y Tecnología
+            "fa-solid fa-laptop-code", "fa-solid fa-desktop", "fa-solid fa-print", "fa-solid fa-keyboard", "fa-solid fa-mouse",
+            "fa-solid fa-microchip", "fa-solid fa-database", "fa-solid fa-server", "fa-solid fa-code", "fa-solid fa-terminal",
+            "fa-solid fa-robot", "fa-solid fa-wifi", "fa-solid fa-battery-full", "fa-solid fa-mobile-screen", "fa-solid fa-tablet-screen-button",
+            // Salud y Deporte
+            "fa-solid fa-dumbbell", "fa-solid fa-person-running", "fa-solid fa-person-swimming", "fa-solid fa-person-walking", "fa-solid fa-person-biking",
+            "fa-solid fa-futbol", "fa-solid fa-basketball", "fa-solid fa-volleyball", "fa-solid fa-table-tennis-paddle-ball", "fa-solid fa-golf-ball-tee",
+            "fa-solid fa-bicycle", "fa-solid fa-skating", "fa-solid fa-skiing", "fa-solid fa-snowboarding", "fa-solid fa-award",
+            "fa-solid fa-stethoscope", "fa-solid fa-pills", "fa-solid fa-hospital", "fa-solid fa-syringe", "fa-solid fa-mask-face",
+            "fa-solid fa-weight-scale", "fa-solid fa-heart-pulse", "fa-solid fa-hand-holding-medical", "fa-solid fa-kit-medical", "fa-solid fa-dna",
+            // Espiritual y Mental
+            "fa-solid fa-bible", "fa-solid fa-pray", "fa-solid fa-church", "fa-solid fa-hands-praying", "fa-solid fa-cross",
+            "fa-solid fa-dove", "fa-solid fa-om", "fa-solid fa-dharmachakra", "fa-solid fa-kaaba", "fa-solid fa-menorah",
+            "fa-solid fa-synagogue", "fa-solid fa-mosque", "fa-solid fa-peace", "fa-solid fa-yin-yang", "fa-solid fa-brain",
+            "fa-solid fa-spa", "fa-solid fa-eye", "fa-solid fa-moon", "fa-solid fa-sun", "fa-solid fa-cloud-moon",
+            // Hogar y Vida Diaria
+            "fa-solid fa-utensils", "fa-solid fa-coffee", "fa-solid fa-mug-hot", "fa-solid fa-glass-water", "fa-solid fa-bottle-water",
+            "fa-solid fa-bed", "fa-solid fa-shower", "fa-solid fa-bath", "fa-solid fa-soap", "fa-solid fa-broom",
+            "fa-solid fa-bucket", "fa-solid fa-kitchen-set", "fa-solid fa-couch", "fa-solid fa-chair", "fa-solid fa-tv",
+            "fa-solid fa-radio", "fa-solid fa-plug", "fa-solid fa-fan", "fa-solid fa-lightbulb", "fa-solid fa-door-open",
+            // Comida y Bebida
+            "fa-solid fa-apple-whole", "fa-solid fa-carrot", "fa-solid fa-egg", "fa-solid fa-bread-slice", "fa-solid fa-cheese",
+            "fa-solid fa-pizza-slice", "fa-solid fa-hamburger", "fa-solid fa-hotdog", "fa-solid fa-ice-cream", "fa-solid fa-cookie",
+            "fa-solid fa-cake-candles", "fa-solid fa-candy-cane", "fa-solid fa-drumstick-bite", "fa-solid fa-fish", "fa-solid fa-shrimp",
+            // Música y Arte
+            "fa-solid fa-music", "fa-solid fa-guitar", "fa-solid fa-drum", "fa-solid fa-piano", "fa-solid fa-microphone",
+            "fa-solid fa-headphones", "fa-solid fa-compact-disc", "fa-solid fa-palette", "fa-solid fa-brush", "fa-solid fa-pen-nib",
+            "fa-solid fa-marker", "fa-solid fa-icons", "fa-solid fa-masks-theater", "fa-solid fa-camera", "fa-solid fa-film",
+            // Transporte y Viajes
+            "fa-solid fa-car", "fa-solid fa-bus", "fa-solid fa-train", "fa-solid fa-plane", "fa-solid fa-ship",
+            "fa-solid fa-motorcycle", "fa-solid fa-truck", "fa-solid fa-van-shuttle", "fa-solid fa-helicopter", "fa-solid fa-rocket",
+            "fa-solid fa-map-location-dot", "fa-solid fa-compass", "fa-solid fa-passport", "fa-solid fa-suitcase", "fa-solid fa-hotel",
+            // Naturaleza y Animales
+            "fa-solid fa-leaf", "fa-solid fa-tree", "fa-solid fa-seedling", "fa-solid fa-flower", "fa-solid fa-mountain",
+            "fa-solid fa-water", "fa-solid fa-wind", "fa-solid fa-bolt", "fa-solid fa-snowflake", "fa-solid fa-fire",
+            "fa-solid fa-paw", "fa-solid fa-dog", "fa-solid fa-cat", "fa-solid fa-horse", "fa-solid fa-cow",
+            "fa-solid fa-sheep", "fa-solid fa-piggy-bank", "fa-solid fa-crow", "fa-solid fa-dove", "fa-solid fa-spider",
+            "fa-solid fa-bug", "fa-solid fa-frog", "fa-solid fa-dragon", "fa-solid fa-hippo", "fa-solid fa-otter",
+            // Finanzas y Educación
+            "fa-solid fa-money-bill-1", "fa-solid fa-credit-card", "fa-solid fa-wallet", "fa-solid fa-coins", "fa-solid fa-bank",
+            "fa-solid fa-chart-line", "fa-solid fa-chart-pie", "fa-solid fa-receipt", "fa-solid fa-graduation-cap", "fa-solid fa-book",
+            "fa-solid fa-book-open", "fa-solid fa-school", "fa-solid fa-chalkboard-user", "fa-solid fa-pencil", "fa-solid fa-ruler",
+            // Herramientas y Objetos
+            "fa-solid fa-wrench", "fa-solid fa-hammer", "fa-solid fa-screwdriver", "fa-solid fa-scissors", "fa-solid fa-paperclip",
+            "fa-solid fa-folder-open", "fa-solid fa-envelope", "fa-solid fa-box-open", "fa-solid fa-gift", "fa-solid fa-briefcase-medical",
+            "fa-solid fa-umbrella", "fa-solid fa-glasses", "fa-solid fa-binoculars", "fa-solid fa-magnifying-glass-plus", "fa-solid fa-key",
+            "fa-solid fa-lock", "fa-solid fa-unlock", "fa-solid fa-shield", "fa-solid fa-clover", "fa-solid fa-gem",
+            // Miscelánea
+            "fa-solid fa-shirt", "fa-solid fa-socks", "fa-solid fa-hat-wizard", "fa-solid fa-crown", "fa-solid fa-magic",
+            "fa-solid fa-wand-sparkles", "fa-solid fa-flask", "fa-solid fa-atom", "fa-solid fa-dna", "fa-solid fa-ghost",
+            "fa-solid fa-skull", "fa-solid fa-bomb", "fa-solid fa-gamepad", "fa-solid fa-puzzle-piece", "fa-solid fa-dice",
+            // Más variaciones
+            "fa-solid fa-shopping-cart", "fa-solid fa-store", "fa-solid fa-bag-shopping", "fa-solid fa-truck-fast", "fa-solid fa-clock-rotate-left",
+            "fa-solid fa-stopwatch", "fa-solid fa-hourglass", "fa-solid fa-infinity", "fa-solid fa-link", "fa-solid fa-anchor",
+            "fa-solid fa-gauge", "fa-solid fa-tachograph-digital", "fa-solid fa-quote-left", "fa-solid fa-message", "fa-solid fa-comments",
+            "fa-solid fa-video", "fa-solid fa-phone-volume", "fa-solid fa-volume-high", "fa-solid fa-bullhorn", "fa-solid fa-ear-listen",
+            // Extras - Clima y Naturaleza
+            "fa-solid fa-cloud-sun", "fa-solid fa-cloud-showers-heavy", "fa-solid fa-cloud-bolt", "fa-solid fa-tornado", "fa-solid fa-hurricane",
+            "fa-solid fa-temperature-high", "fa-solid fa-temperature-low", "fa-solid fa-droplet", "fa-solid fa-rainbow", "fa-solid fa-volcano",
+            // Extras - Objetos y Símbolos
+            "fa-solid fa-anchor", "fa-solid fa-vial", "fa-solid fa-vials", "fa-solid fa-microscope", "fa-solid fa-dna",
+            "fa-solid fa-infinity", "fa-solid fa-pi", "fa-solid fa-plus-minus", "fa-solid fa-equals", "fa-solid fa-divide",
+            "fa-solid fa-percent", "fa-solid fa-square-root-variable", "fa-solid fa-cube", "fa-solid fa-cubes", "fa-solid fa-layer-group",
+            // Extras - Gente y Gestos
+            "fa-solid fa-person", "fa-solid fa-person-dress", "fa-solid fa-people-group", "fa-solid fa-child", "fa-solid fa-baby",
+            "fa-solid fa-hand", "fa-solid fa-thumbs-up", "fa-solid fa-thumbs-down", "fa-solid fa-handshake", "fa-solid fa-hand-fist",
+            "fa-solid fa-hand-pointer", "fa-solid fa-hand-peace", "fa-solid fa-user-tie", "fa-solid fa-user-ninja", "fa-solid fa-user-secret",
+            // Extras - Commerce y Shops
+            "fa-solid fa-cart-shopping", "fa-solid fa-cart-plus", "fa-solid fa-store", "fa-solid fa-shop", "fa-solid fa-barcode",
+            "fa-solid fa-qrcode", "fa-solid fa-ticket", "fa-solid fa-tag", "fa-solid fa-tags", "fa-solid fa-credit-card",
+            // Extras - Flechas y Navegación
+            "fa-solid fa-arrow-up", "fa-solid fa-arrow-down", "fa-solid fa-arrow-left", "fa-solid fa-arrow-right", "fa-solid fa-arrows-up-down",
+            "fa-solid fa-arrows-left-right", "fa-solid fa-arrows-rotate", "fa-solid fa-rotate-right", "fa-solid fa-rotate-left", "fa-solid fa-repeat",
+            "fa-solid fa-shuffle", "fa-solid fa-expand", "fa-solid fa-compress", "fa-solid fa-maximize", "fa-solid fa-minimize",
+            // Extras - Social y Comunicación
+            "fa-solid fa-at", "fa-solid fa-hashtag", "fa-solid fa-paper-plane", "fa-solid fa-address-book", "fa-solid fa-address-card",
+            "fa-solid fa-blog", "fa-solid fa-rss", "fa-solid fa-share-nodes", "fa-solid fa-wifi", "fa-solid fa-tower-broadcast",
+            // Extras - Seguridad
+            "fa-solid fa-eye-slash", "fa-solid fa-fingerprint", "fa-solid fa-key", "fa-solid fa-lock", "fa-solid fa-lock-open",
+            "fa-solid fa-shield-halved", "fa-solid fa-vault", "fa-solid fa-user-shield", "fa-solid fa-passport", "fa-solid fa-id-card",
+            // Extras - Diversión
+            "fa-solid fa-balloon", "fa-solid fa-champagne-glasses", "fa-solid fa-clown-face", "fa-solid fa-hat-cowboy", "fa-solid fa-hat-wizard",
+            "fa-solid fa-mountain-sun", "fa-solid fa-tent", "fa-solid fa-umbrella-beach", "fa-solid fa-wine-glass", "fa-solid fa-beer-mug-empty"
+        ];
+
         let storedSchedule = JSON.parse(localStorage.getItem('horarioGoData'));
         let scheduleData = storedSchedule || defaultSchedule;
         
@@ -283,10 +375,8 @@
             if (addContainer) {
                 if (isEditMode) {
                     addContainer.classList.remove('hidden');
-                    addContainer.classList.add('grid');
                 } else {
                     addContainer.classList.add('hidden');
-                    addContainer.classList.remove('grid');
                 }
             }
             renderDay(currentEditingDay);
@@ -361,16 +451,18 @@
         }
 
         function updateCalculatedStats() {
-            const stats = { 'cat-work': 0, 'cat-health': 0, 'cat-spiritual': 0, 'cat-social': 0, 'cat-sleep': 0 };
+            const stats = {};
             
             // Daily tasks (x7)
             scheduleData.daily.forEach(t => {
+                if (!stats[t.cat]) stats[t.cat] = 0;
                 stats[t.cat] += getDuration(t.start, t.end) * 7;
             });
             
             // Specific day tasks
             Object.keys(scheduleData.days).forEach(day => {
                 scheduleData.days[day].forEach(t => {
+                    if (!stats[t.cat]) stats[t.cat] = 0;
                     stats[t.cat] += getDuration(t.start, t.end);
                 });
             });
@@ -388,7 +480,7 @@
             ];
 
             categories.forEach(c => {
-                const hours = stats[c.cat];
+                const hours = stats[c.cat] || 0;
                 const pct = ((hours / totalWeek) * 100).toFixed(1);
                 totalAccounted += hours;
 
@@ -420,11 +512,45 @@
             }
         }
 
+        function toggleEditDay(value) {
+            if (value === 'daily') {
+                if (selectedEditDays.includes('daily')) {
+                    selectedEditDays = [];
+                } else {
+                    selectedEditDays = ['daily'];
+                }
+            } else {
+                selectedEditDays = selectedEditDays.filter(d => d !== 'daily');
+                if (selectedEditDays.includes(String(value))) {
+                    selectedEditDays = selectedEditDays.filter(d => d !== String(value));
+                } else {
+                    selectedEditDays.push(String(value));
+                }
+            }
+            updateDayTagsUI();
+        }
+
+        function updateDayTagsUI() {
+            document.querySelectorAll('.day-tag').forEach(tag => {
+                const val = tag.getAttribute('data-value');
+                const isActive = selectedEditDays.includes(val);
+                if (isActive) {
+                    tag.classList.add('bg-blue-500/40', 'border-blue-500', 'text-white', 'shadow-[0_0_10px_rgba(59,130,246,0.2)]');
+                    tag.classList.remove('bg-white/5', 'border-white/10');
+                } else {
+                    tag.classList.remove('bg-blue-500/40', 'border-blue-500', 'text-white', 'shadow-[0_0_10px_rgba(59,130,246,0.2)]');
+                    tag.classList.add('bg-white/5', 'border-white/10');
+                }
+            });
+        }
+
         function openEditModal(index, isDaily) {
             editingIndex = index;
             isDailyTask = isDaily;
             const task = isDaily ? scheduleData.daily[index] : scheduleData.days[currentEditingDay][index];
             
+            selectedEditDays = isDaily ? ['daily'] : [String(currentEditingDay)];
+            updateDayTagsUI();
             document.getElementById('edit-task-name').value = task.task;
             document.getElementById('edit-start').value = task.start;
             document.getElementById('edit-end').value = task.end;
@@ -432,10 +558,23 @@
             document.getElementById('edit-desc').value = task.desc;
             document.getElementById('edit-cat').value = task.cat;
             
+            if (task.cat === 'cat-other') {
+                document.getElementById('custom-cat-container').classList.remove('hidden');
+                document.getElementById('edit-cat-custom').value = task.customCat || '';
+            } else {
+                document.getElementById('custom-cat-container').classList.add('hidden');
+                document.getElementById('edit-cat-custom').value = '';
+            }
+            
             document.getElementById('edit-modal').classList.add('active');
         }
 
         function saveEdit() {
+            if (selectedEditDays.length === 0) {
+                alert("Selecciona al menos un día o 'Diario'");
+                return;
+            }
+
             const updated = {
                 task: document.getElementById('edit-task-name').value,
                 start: document.getElementById('edit-start').value,
@@ -445,8 +584,27 @@
                 cat: document.getElementById('edit-cat').value
             };
 
-            if (isDailyTask) scheduleData.daily[editingIndex] = updated;
-            else scheduleData.days[currentEditingDay][editingIndex] = updated;
+            if (updated.cat === 'cat-other') {
+                updated.customCat = document.getElementById('edit-cat-custom').value;
+            }
+
+            // Remove from old location
+            if (isDailyTask) {
+                scheduleData.daily.splice(editingIndex, 1);
+            } else {
+                scheduleData.days[currentEditingDay].splice(editingIndex, 1);
+            }
+
+            // Add to all selected new locations
+            selectedEditDays.forEach(day => {
+                if (day === 'daily') {
+                    scheduleData.daily.push({...updated});
+                } else {
+                    const dayIdx = parseInt(day);
+                    if (!scheduleData.days[dayIdx]) scheduleData.days[dayIdx] = [];
+                    scheduleData.days[dayIdx].push({...updated});
+                }
+            });
 
             saveToStorage();
             closeModal();
@@ -468,18 +626,62 @@
         }
 
         function deleteTask() {
-            if (confirm("¿Seguro que deseas eliminar esta actividad?")) {
-                if (isDailyTask) {
-                    scheduleData.daily.splice(editingIndex, 1);
-                } else {
-                    scheduleData.days[currentEditingDay].splice(editingIndex, 1);
-                }
-                saveToStorage();
-                closeModal();
-                renderDay(currentEditingDay);
-                updateLiveActivity();
-                updateCalculatedStats();
+            document.getElementById('confirm-modal').classList.add('active');
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirm-modal').classList.remove('active');
+        }
+
+        function openIconModal() {
+            renderIconGrid("");
+            document.getElementById('icon-modal').classList.add('active');
+            setTimeout(() => document.getElementById('icon-search').focus(), 100);
+        }
+
+        function closeIconModal() {
+            document.getElementById('icon-modal').classList.remove('active');
+        }
+
+        function renderIconGrid(filter = "") {
+            const grid = document.getElementById('icon-grid');
+            if (!grid) return;
+            grid.innerHTML = "";
+            const filtered = commonIcons.filter(icon => icon.toLowerCase().includes(filter.toLowerCase()));
+            
+            filtered.forEach(icon => {
+                const btn = document.createElement('button');
+                btn.type = "button";
+                btn.className = "aspect-square rounded-xl bg-white/5 border border-white/5 hover:bg-blue-500/20 hover:border-blue-500 transition-all text-lg md:text-xl text-white flex items-center justify-center p-2";
+                btn.innerHTML = `<i class="${icon}"></i>`;
+                btn.onclick = () => selectIcon(icon);
+                btn.title = icon;
+                grid.appendChild(btn);
+            });
+        }
+
+        function filterIcons() {
+            const val = document.getElementById('icon-search').value;
+            renderIconGrid(val);
+        }
+
+        function selectIcon(icon) {
+            document.getElementById('edit-icon').value = icon;
+            closeIconModal();
+        }
+
+        function confirmDelete() {
+            if (isDailyTask) {
+                scheduleData.daily.splice(editingIndex, 1);
+            } else {
+                scheduleData.days[currentEditingDay].splice(editingIndex, 1);
             }
+            saveToStorage();
+            closeConfirmModal();
+            closeModal();
+            renderDay(currentEditingDay);
+            updateLiveActivity();
+            updateCalculatedStats();
         }
 
         function closeModal() { document.getElementById('edit-modal').classList.remove('active'); }

@@ -6,6 +6,10 @@
   --neon-gold: #f59e0b;
   --neon-green: #10b981;
   --neon-purple: #8b5cf6;
+  --neon-pink: #ec4899;
+  --neon-yellow: #eab308;
+  --neon-orange: #f97316;
+  --gray-slate: #64748b;
 }
 
 body {
@@ -39,6 +43,7 @@ body {
 
 .hud-panel {
   position: relative;
+  border-radius: 0 !important;
   background-image:
     linear-gradient(to right, var(--neon-blue) 2px, transparent 2px),
     linear-gradient(to bottom, var(--neon-blue) 2px, transparent 2px),
@@ -112,6 +117,28 @@ body {
 .cat-sleep {
   border-left-color: #64748b;
 }
+.cat-food { border-left-color: var(--neon-red); }
+.cat-family { border-left-color: var(--neon-pink); }
+.cat-studies { border-left-color: var(--neon-yellow); }
+.cat-gym { border-left-color: var(--neon-green); }
+.cat-game { border-left-color: var(--neon-blue); }
+.cat-guitar { border-left-color: var(--neon-orange); }
+.cat-car { border-left-color: var(--gray-slate); }
+.cat-prayer { border-left-color: var(--neon-gold); }
+.cat-church { border-left-color: var(--neon-gold); }
+.cat-friends { border-left-color: var(--neon-purple); }
+.cat-music { border-left-color: var(--neon-orange); }
+.cat-shopping { border-left-color: var(--neon-green); }
+.cat-travel { border-left-color: var(--neon-blue); }
+.cat-pets { border-left-color: var(--neon-pink); }
+.cat-reading { border-left-color: var(--neon-yellow); }
+.cat-cleaning { border-left-color: var(--gray-slate); }
+.cat-phone { border-left-color: var(--neon-blue); }
+.cat-computer { border-left-color: var(--neon-blue); }
+.cat-drawing { border-left-color: var(--neon-blue); }
+.cat-coding { border-left-color: var(--neon-blue); }
+.cat-basketball { border-left-color: var(--neon-orange); }
+.cat-other { border-left-color: var(--neon-gold); }
 
 .edit-mode .activity-card {
   border-style: dashed;
