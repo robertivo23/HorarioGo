@@ -356,7 +356,7 @@
 
     <!-- MODAL EDIT TASK -->
     <div id="edit-modal" class="modal">
-        <div class="glass p-8 rounded-2xl w-full max-w-md border-blue-500/50 shadow-2xl mx-4">
+        <div class="hud-panel glass p-8 w-full max-w-md border-blue-500/50 shadow-2xl mx-4">
             <h2 class="text-2xl font-black text-white uppercase italic mb-6">Editar Actividad</h2>
             <div class="space-y-4">
                 <div class="group/field">
@@ -512,7 +512,7 @@
 
     <!-- MODAL PERFIL -->
     <div id="profile-modal" class="modal" onclick="closeProfileModal()">
-        <div class="hud-panel glass p-6 md:p-8 w-[95%] max-w-sm rounded-3xl border border-blue-500/30 relative" onclick="event.stopPropagation()">
+        <div class="hud-panel glass p-6 md:p-8 w-[95%] max-w-sm border border-blue-500/30 relative" onclick="event.stopPropagation()">
             <div class="flex items-center gap-3 mb-6 pb-4 border-b border-white/10">
                 <i class="fa-solid fa-user-astronaut text-3xl text-blue-400"></i>
                 <div>
@@ -541,7 +541,7 @@
 
     <!-- MODAL ALARMA -->
     <div id="alarm-modal" class="modal" onclick="closeAlarmModal()">
-        <div class="hud-panel glass p-8 w-[95%] max-w-md rounded-3xl border border-red-500/50 relative overflow-hidden" onclick="event.stopPropagation()">
+        <div class="hud-panel glass p-8 w-[95%] max-w-md border border-red-500/50 relative overflow-hidden" onclick="event.stopPropagation()">
             <div class="absolute inset-0 bg-red-500/10 animate-pulse pointer-events-none"></div>
             <div class="relative z-10 flex flex-col items-center text-center">
                 <div class="w-20 h-20 bg-red-500/20 rounded-full flex items-center justify-center mb-4 border border-red-500/50 shadow-[0_0_30px_rgba(239,68,68,0.4)]">
@@ -566,31 +566,35 @@
 
     <!-- MODAL ICON PICKER -->
     <div id="icon-modal" class="modal" onclick="closeIconModal()">
-        <div class="hud-panel glass p-6 w-[95%] max-w-md rounded-3xl border border-blue-500/30 relative" onclick="event.stopPropagation()">
-            <div class="flex justify-between items-center mb-6">
+        <div class="hud-panel glass p-4 md:p-6 w-[95%] max-w-lg border border-blue-500/30 relative flex flex-col max-h-[90vh]" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-4 md:mb-6 flex-none">
                 <div>
-                    <h2 class="text-xl font-black text-white uppercase tracking-tighter">Galería de Iconos</h2>
-                    <p class="text-[10px] mono text-blue-400 uppercase tracking-widest">FontAwesome Library</p>
+                    <h2 class="text-lg md:text-xl font-black text-white uppercase tracking-tighter leading-none">Galería de Iconos</h2>
+                    <p class="text-[9px] md:text-[10px] mono text-blue-400 uppercase tracking-widest mt-1">FontAwesome Library</p>
                 </div>
-                <button onclick="closeIconModal()" class="text-slate-500 hover:text-white transition-colors">✕</button>
+                <button onclick="closeIconModal()" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white transition-colors">✕</button>
             </div>
             
-            <div class="mb-6">
+            <div class="mb-4 md:mb-6 flex-none">
                 <div class="relative group">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors"></i>
-                    <input id="icon-search" type="text" oninput="filterIcons()" placeholder="Buscar icono (ej: star, work, gym...)" class="w-full bg-slate-950 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white focus:border-blue-500 outline-none text-xs transition-all shadow-inner">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors text-sm"></i>
+                    <input id="icon-search" type="text" oninput="filterIcons()" placeholder="Buscar icono (ej: star, work, gym...)" class="w-full bg-slate-950 border border-white/10 rounded-xl py-2.5 md:py-3 pl-10 pr-4 text-white focus:border-blue-500 outline-none text-[11px] md:text-xs transition-all shadow-inner">
                 </div>
             </div>
 
-            <div id="icon-grid" class="grid grid-cols-5 gap-3 max-h-[350px] overflow-y-auto pr-2 custom-scroll mb-4">
+            <div id="icon-grid" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 md:gap-3 overflow-y-auto pr-2 custom-scroll flex-1">
                 <!-- Populated by JS -->
+            </div>
+            
+            <div class="mt-4 pt-4 border-t border-white/5 flex-none md:hidden">
+                 <button onclick="closeIconModal()" class="w-full bg-slate-800 text-white py-3 rounded-xl text-xs font-bold uppercase tracking-widest">Cerrar</button>
             </div>
         </div>
     </div>
 
     <!-- MODAL CONFIRM DELETE -->
     <div id="confirm-modal" class="modal" onclick="closeConfirmModal()">
-        <div class="hud-panel glass p-8 w-[95%] max-w-sm rounded-3xl border border-red-500/30 relative" onclick="event.stopPropagation()">
+        <div class="hud-panel glass p-8 w-[95%] max-w-sm border border-red-500/30 relative" onclick="event.stopPropagation()">
             <div class="flex flex-col items-center text-center">
                 <div class="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mb-4 border border-red-500/20">
                     <i class="fa-solid fa-triangle-exclamation text-3xl text-red-500"></i>
